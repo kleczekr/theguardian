@@ -227,6 +227,7 @@
       d3.select(container).html(null);
       load_data();
     });
+
     function draw_chart(data, detail) {
       // append the svg object to the body of the page
       const svg = d3
@@ -238,10 +239,6 @@
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
       const color = d3.scaleOrdinal().domain(keys).range(d3.schemeSet2);
-      // .range(d3.schemeDark2);
-      console.log(color("Boris Johnson"));
-      // console.log(color.domain)
-      // console.log(color.range)
 
       //////////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////STACK THE DATA////////////////////////////////////
@@ -360,7 +357,7 @@
         .style("stroke", "blue")
         .attr("r", 4);
 
-      // append active inventory value at the intersection
+      // append value at the intersection
       focus
         .append("text")
         .attr("class", "y1")
@@ -376,7 +373,7 @@
         .attr("dx", 8)
         .attr("dy", "-6.3em");
 
-      // append aged inventory value at the intersection
+      // append value at the intersection
       focus
         .append("text")
         .attr("class", "y12")
@@ -392,7 +389,7 @@
         .attr("dx", 8)
         .attr("dy", "-5.3em");
 
-      // append the order value (if present) at the intersection
+      // append value (if present) at the intersection
       focus
         .append("text")
         .attr("class", "y13")
@@ -408,7 +405,7 @@
         .attr("dx", 8)
         .attr("dy", "-4.3em");
 
-      // append the order value (if present) at the intersection
+      // append the value (if present) at the intersection
       focus
         .append("text")
         .attr("class", "y14")
@@ -424,7 +421,7 @@
         .attr("dx", 8)
         .attr("dy", "-3.3em");
 
-      // append the order value (if present) at the intersection
+      // append the value (if present) at the intersection
       focus
         .append("text")
         .attr("class", "y15")
@@ -440,7 +437,7 @@
         .attr("dx", 8)
         .attr("dy", "-2.3em");
 
-      // append the order value (if present) at the intersection
+      // append the value (if present) at the intersection
       focus
         .append("text")
         .attr("class", "y16")
@@ -456,7 +453,7 @@
         .attr("dx", 8)
         .attr("dy", "-1.3em");
 
-      // append the order value (if present) at the intersection
+      // append the value (if present) at the intersection
       focus
         .append("text")
         .attr("class", "y17")
@@ -531,9 +528,6 @@
           sumHeight += d[keys[i]];
         }
         let yHeight = y(sumHeight);
-        // let yHeight = y(d['Justin Trudeau']+ d['Theresa May'] + d['Boris Johnson'] +
-        //     d['Emmanuel Macron'] + d['Angela Merkel'] + d['Jacinda Ardern'] +
-        //     d['Bernie Sanders'])
 
         let dynamic_x = x(d.date) < width - 120 ? x(d.date) : x(d.date) - 120;
 
@@ -646,24 +640,20 @@
           d.webPublicationDate = d.webPublicationDate.slice(0, 10);
           d.date = parser(d.webPublicationDate);
         });
-        console.log("REGULAR DATA LOADED");
-        console.log(data);
+
         const flatRoll = d3.flatRollup(
           data,
           (v) => v.length,
           (d) => d.date,
           (d) => d.name
         );
-        console.log("FLATROLL");
-        console.log(flatRoll);
-        console.log("TRYING TO MESS WITH IT A BIT");
+
         const flatArrayObj = flatRoll.map(([date, name, count]) => ({
           date,
           name,
           count,
         }));
-        console.log(flatArrayObj);
-        console.log("RES");
+
         let res = Array.from(
           d3.group(flatArrayObj, (d) => d.date),
           ([date, group]) =>
@@ -677,13 +667,8 @@
           return a.date - b.date;
         }
 
-        // console.log(res)
-
         for (let i = 0; i < res.length; i++) {
           for (let j = 0; j < keys.length; j++) {
-            // console.log(Object.keys(res[i]))
-            // console.log(Object.keys(res[i]).includes('Bernie Sanders'))
-            // console.log(!Object.keys(res[i]).includes('Bernie Sanders'))
             !Object.keys(res[i]).includes(keys[j])
               ? (res[i][keys[j]] = 0)
               : console.log(
